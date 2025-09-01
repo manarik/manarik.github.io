@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from "react";
 import animeListData from "./animeList.json";
 
-// Set browser tab title
-document.title = "Anime Tracker";
+// Set browser tab title and favicon
+function useAnimeTabWithImage() {
+  useEffect(() => {
+    document.title = "Anime Tracker";
+    // Remove any previous favicon
+    const oldFavicon = document.querySelector("link[rel='icon']");
+    if (oldFavicon) document.head.removeChild(oldFavicon);
+
+    // Create new favicon using imported branding image
+    const favicon = document.createElement("link");
+    favicon.rel = "icon";
+    favicon.type = "image/png";
+    // You must place banner1.png in your src directory
+    favicon.href = require("./banner1.png");
+    document.head.appendChild(favicon);
+
+    return () => {
+      if (favicon) document.head.removeChild(favicon);
+    };
+  }, []);
+}
 
 // Back to Top Button
 function BackToTopButton() {
@@ -53,7 +72,6 @@ async function fetchStreamingLinks(animeTitle) {
 
 // Only hyperlink Crunchyroll, Hulu, Amazon, Netflix
 function StreamingOptions({ links }) {
-  // Lowercase for matching
   const allowedHyperlinks = ["crunchyroll", "hulu", "amazon", "netflix"];
   return (
     <div className="mt-4 pt-4 border-t border-gray-700">
@@ -92,6 +110,8 @@ const DividerBar = () => (
 );
 
 function App() {
+  useAnimeTabWithImage();
+
   const [animeList, setAnimeList] = useState([]);
   const [selectedAnime, setSelectedAnime] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -251,12 +271,37 @@ function App() {
     return "text-gray-300";
   };
 
+  // Banner with favicon image to the left of text
+  function BannerWithImage() {
+    return (
+      <div className="flex items-center justify-center mb-6 gap-3">
+        <img
+          src={require("./banner1.png")}
+          alt="Anime Tracker Icon"
+          style={{
+            width: "54px",
+            height: "54px",
+            objectFit: "cover",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px #222",
+            border: "1px solid #444",
+            background: "#20222f"
+          }}
+        />
+        <h1 className="text-4xl font-bold text-center" style={{ letterSpacing: "2px" }}>
+          Anime Tracker
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-gray-900 min-h-screen text-white" style={{ overflowX: "hidden" }}>
       <div className="container mx-auto py-8 px-2" style={{ maxWidth: "100vw" }}>
-        {/* Centered site title and controls */}
+        {/* Top branding banner */}
+        <BannerWithImage />
+        {/* Controls */}
         <div className="flex flex-col items-center justify-center mb-6">
-          <h1 className="text-4xl font-bold mb-4 text-center">Anime Tracker</h1>
           {/* Search bar above controls */}
           <div className="w-full flex items-center justify-center mb-3">
             <input
@@ -316,13 +361,7 @@ function App() {
                     <span className="font-semibold">Status:</span> {anime.watchStatus}
                   </p>
                   <p className="text-gray-400 text-sm mb-1">
-                    <span className="font-semibold">Popularity Rank:</span> {anime.popularityRank}
-                  </p>
-                  <p className="text-gray-400 text-sm mb-1">
-                    <span className="font-semibold">Rating Rank:</span> {anime.ratingRank}
-                  </p>
-                  <p className="text-gray-400 text-sm mb-1">
-                    <span className="font-semibold">Overall Rating:</span> {anime.overallRating}
+                    <span className="font-semibold">Craig's Overall Rating:</span> {anime.overallRating}
                   </p>
                 </div>
               </div>
@@ -338,8 +377,7 @@ function App() {
                   <th className="p-2 text-left text-gray-400">Status</th>
                   <th className="p-2 text-left text-gray-400">Year</th>
                   <th className="p-2 text-left text-gray-400">Episodes</th>
-                  <th className="p-2 text-left text-gray-400">Rating</th>
-                  <th className="p-2 text-left text-gray-400">Popularity</th>
+                  <th className="p-2 text-left text-gray-400">Craig's Overall Rating</th>
                   <th className="p-2 text-left text-gray-400">Watch Order</th>
                 </tr>
               </thead>
@@ -354,7 +392,6 @@ function App() {
                     <td className="p-2">{anime.year}</td>
                     <td className="p-2">{anime.episodeCount}</td>
                     <td className="p-2">{anime.overallRating}</td>
-                    <td className="p-2">{anime.popularityRank}</td>
                     <td className="p-2">{anime.watchOrder}</td>
                   </tr>
                 ))}
@@ -381,25 +418,15 @@ function App() {
                 <div className="flex flex-col md:flex-row items-center md:items-start">
                   <img src={selectedAnime.poster} alt={selectedAnime.title} className="h-64 w-auto rounded mb-4 md:mb-0 md:mr-8 object-cover" />
                   <div className="flex-1">
+                    {/* Summary section */}
                     <h2 className="text-3xl font-bold mb-2 text-center">{selectedAnime.title || "Unknown Title"}</h2>
                     <div className="mb-2 text-gray-300">
                       <span className="font-semibold">Summary:</span> {selectedAnime.synopsis}
                     </div>
                     <DividerBar />
+                    {/* JSON file info */}
                     <p className={`${getWatchStatusTextClass(selectedAnime.watchStatus)} text-sm mb-1`}>
                       <span className="font-semibold">Status:</span> {selectedAnime.watchStatus}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Kitsu Status:</span> {selectedAnime.kitsuStatus}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Popularity Rank:</span> {selectedAnime.popularityRank}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Rating Rank:</span> {selectedAnime.ratingRank}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Watch Order:</span> {selectedAnime.watchOrder}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Overall Rating:</span> {selectedAnime.overallRating}
@@ -423,6 +450,20 @@ function App() {
                       <span className="font-semibold">Notes:</span> {selectedAnime.notes}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
+                      <span className="font-semibold">Watch Order:</span> {selectedAnime.watchOrder}
+                    </p>
+                    <DividerBar />
+                    {/* API info */}
+                    <p className="text-gray-400 text-sm mb-1">
+                      <span className="font-semibold">Kitsu Status:</span> {selectedAnime.kitsuStatus}
+                    </p>
+                    <p className="text-gray-400 text-sm mb-1">
+                      <span className="font-semibold">Popularity Rank:</span> {selectedAnime.popularityRank}
+                    </p>
+                    <p className="text-gray-400 text-sm mb-1">
+                      <span className="font-semibold">Rating Rank:</span> {selectedAnime.ratingRank}
+                    </p>
+                    <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Year:</span> {selectedAnime.year}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
@@ -431,6 +472,8 @@ function App() {
                     <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Genres:</span> {selectedGenres.length > 0 ? selectedGenres.join(", ") : "Loading..."}
                     </p>
+                    {/* Only one divider between API info and streaming options */}
+                    <DividerBar />
                     {/* Streaming Options at the bottom */}
                     <StreamingOptions links={selectedAniListLinks} />
                   </div>
