@@ -199,7 +199,9 @@ function App() {
       if ((a.watchStatus || "") === (b.watchStatus || "")) {
         return (a.title || "").localeCompare(b.title || "");
       }
-      return (a.watchStatus === "Watched" ? -1 : 1);
+      // 'Watching' first, then 'Watched', then 'Unwatched'
+      const statusOrder = { "Watching": 0, "Watched": 1, "Unwatched": 2 };
+      return (statusOrder[a.watchStatus] ?? 3) - (statusOrder[b.watchStatus] ?? 3);
     } else if (sortBy === "watchOrder") {
       const aOrder = a.watchOrder !== undefined ? Number(a.watchOrder) : Infinity;
       const bOrder = b.watchOrder !== undefined ? Number(b.watchOrder) : Infinity;
@@ -375,26 +377,35 @@ function App() {
                   <th className="p-2 text-left text-gray-400">Cover</th>
                   <th className="p-2 text-left text-gray-400">Title</th>
                   <th className="p-2 text-left text-gray-400">Status</th>
-                  <th className="p-2 text-left text-gray-400">Year</th>
-                  <th className="p-2 text-left text-gray-400">Episodes</th>
                   <th className="p-2 text-left text-gray-400">Craig's Overall Rating</th>
                   <th className="p-2 text-left text-gray-400">Watch Order</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredAnimeList.map((anime) => (
-                  <tr key={anime.kitsu_id} className="cursor-pointer hover:bg-gray-800" onClick={() => handleCardClick(anime)}>
-                    <td className="p-2">
-                      <img src={anime.posterThumb} alt={anime.title} width={48} height={64} style={{ borderRadius: "0.25rem", objectFit: "cover", background: "#222" }} />
-                    </td>
-                    <td className="p-2">{anime.title || "Unknown Title"}</td>
-                    <td className="p-2">{anime.watchStatus}</td>
-                    <td className="p-2">{anime.year}</td>
-                    <td className="p-2">{anime.episodeCount}</td>
-                    <td className="p-2">{anime.overallRating}</td>
-                    <td className="p-2">{anime.watchOrder}</td>
-                  </tr>
-                ))}
+                {filteredAnimeList.map((anime) => {
+                  // Use same highlighting as tiles
+                  let rowClass = "cursor-pointer hover:bg-gray-800 ";
+                  if (anime.watchStatus === "Watching") {
+                    rowClass += "bg-green-900 border-l-4 border-green-700";
+                  } else if (anime.watchStatus === "Watched") {
+                    rowClass += "bg-blue-900 border-l-4 border-yellow-700";
+                  } else if (anime.watchStatus === "Unwatched") {
+                    rowClass += "bg-gray-800 border-l-4 border-gray-700";
+                  } else {
+                    rowClass += "bg-gray-700 border-l-4 border-gray-700";
+                  }
+                  return (
+                    <tr key={anime.kitsu_id} className={rowClass} onClick={() => handleCardClick(anime)}>
+                      <td className="p-2">
+                        <img src={anime.posterThumb} alt={anime.title} width={48} height={64} style={{ borderRadius: "0.25rem", objectFit: "cover", background: "#222" }} />
+                      </td>
+                      <td className="p-2">{anime.title || "Unknown Title"}</td>
+                      <td className="p-2">{anime.watchStatus}</td>
+                      <td className="p-2">{anime.overallRating}</td>
+                      <td className="p-2">{anime.watchOrder}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -424,33 +435,21 @@ function App() {
                       <span className="font-semibold">Summary:</span> {selectedAnime.synopsis}
                     </div>
                     <DividerBar />
-                    {/* JSON file info */}
+                    {/* JSON file info - only show requested fields */}
                     <p className={`${getWatchStatusTextClass(selectedAnime.watchStatus)} text-sm mb-1`}>
                       <span className="font-semibold">Status:</span> {selectedAnime.watchStatus}
+                    </p>
+                    <p className="text-gray-400 text-sm mb-1">
+                      <span className="font-semibold">Watch Order:</span> {selectedAnime.watchOrder}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Overall Rating:</span> {selectedAnime.overallRating}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Story Rating:</span> {selectedAnime.storyRating}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Animation/Visuals Rating:</span> {selectedAnime.animationVisualsRating}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Pacing:</span> {selectedAnime.pacing}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Favorite Character:</span> {selectedAnime.favoriteCharacter}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Favorite Part:</span> {selectedAnime.favoritePart}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Notes:</span> {selectedAnime.notes}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Watch Order:</span> {selectedAnime.watchOrder}
                     </p>
                     <DividerBar />
                     {/* API info */}
