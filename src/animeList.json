@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Haikyuu!!",
+    "status": "Watched",
+    "watchOrder": 1,
+    "overallRating": 9,
+    "storyRating": 4,
+    "animationVisualsRating": 5,
+    "pacing": "slow",
+    "favoriteCharacter": "Tsuki",
+    "favoritePart": "action",
+    "notes": "Great character development."
+  },
+  {
+    "title": "Demon Slayer",
+    "status": "Watched",
+    "watchOrder": 2,
+    "overallRating": 9,
+    "storyRating": 4,
+    "animationVisualsRating": 5,
+    "pacing": "medium",
+    "favoriteCharacter": "Tanjiro Kamado",
+    "favoritePart": "animation",
+    "notes": "Stunning animation and heartfelt story."
+  },
+  {
+    "title": "Attack on Titan",
+    "status": "Watched",
+    "watchOrder": 3,
+    "overallRating": 8,
+    "storyRating": 4,
+    "animationVisualsRating": 4,
+    "pacing": "fast",
+    "favoriteCharacter": "Levi Ackerman",
+    "favoritePart": "action",
+    "notes": "Incredible action and buildup."
+  },
+  {
+    "title": "Fullmetal Alchemist: Brotherhood",
+    "status": "To Watch",
+    "watchOrder": null,
+    "overallRating": null,
+    "storyRating": null,
+    "animationVisualsRating": null,
+    "pacing": null,
+    "favoriteCharacter": null,
+    "favoritePart": null,
+    "notes": ""
+  }
+]
