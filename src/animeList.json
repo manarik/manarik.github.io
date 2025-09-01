@@ -398,5 +398,29 @@
     "overallRating": null,
     "favoriteCharacter": null,
     "notes": ""
+  },
+    {
+    "title": "Dragon Ball",
+    "watchStatus": "Watched",
+    "watchOrder": 51,
+    "overallRating": null,
+    "favoriteCharacter": null,
+    "notes": ""
+  },
+    {
+    "title": "Dragon Ball Z",
+    "watchStatus": "Watched",
+    "watchOrder": 52,
+    "overallRating": null,
+    "favoriteCharacter": null,
+    "notes": ""
+  }
+  {
+    "title": "Dragon Ball Super",
+    "watchStatus": "Watched",
+    "watchOrder": 53,
+    "overallRating": null,
+    "favoriteCharacter": null,
+    "notes": ""
   }
 ]
