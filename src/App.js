@@ -185,9 +185,16 @@ function App() {
             `https://kitsu.io/api/edge/anime?filter[text]=${encodeURIComponent(entry.title)}`
           );
           const apiData = await res.json();
+          // --------- PATCH: FIND BEST MATCH ---------
+          const searchTitle = entry.title.trim().toLowerCase();
+          const anime = apiData.data.find(a =>
+            (a.attributes.canonicalTitle || "").trim().toLowerCase() === searchTitle
+            || (a.attributes.titles?.en || "").trim().toLowerCase() === searchTitle
+            || (a.attributes.titles?.en_jp || "").trim().toLowerCase() === searchTitle
+            || (a.attributes.titles?.ja_jp || "").trim().toLowerCase() === searchTitle
+          ) || apiData.data[0];
           let extra = {};
-          if (apiData.data && apiData.data.length > 0) {
-            const anime = apiData.data[0];
+          if (anime) {
             extra = {
               kitsu_id: anime.id,
               synopsis: anime.attributes.synopsis || "No synopsis available.",
@@ -245,6 +252,7 @@ function App() {
 
   // Sorting logic
   const sortedAnimeList = [...animeList].sort((a, b) => {
+    // Use watchOrder as secondary sort if present and numbers
     if (sortBy === "title") {
       return (a.title || "").localeCompare(b.title || "");
     } else if (sortBy === "overallRating") {
