@@ -13,7 +13,6 @@ function useAnimeTabWithImage() {
     const favicon = document.createElement("link");
     favicon.rel = "icon";
     favicon.type = "image/png";
-    // You must place banner1.png in your src directory
     favicon.href = require("./banner1.png");
     document.head.appendChild(favicon);
 
@@ -104,6 +103,61 @@ function StreamingOptions({ links }) {
   );
 }
 
+// Franchise aggregation logic (NEW)
+async function fetchFranchiseInfo(franchiseString) {
+  // Search Kitsu for this franchise
+  const resp = await fetch(`https://kitsu.io/api/edge/anime?filter[text]=${encodeURIComponent(franchiseString)}`);
+  const data = await resp.json();
+  const allowedSubtypes = ["TV", "movie"];
+  const matchString = franchiseString.trim().toLowerCase();
+
+  const relevantEntries = (data.data || []).filter(entry => {
+    const subtype = entry.attributes.subtype;
+    if (!allowedSubtypes.includes(subtype)) return false;
+    const canonical = (entry.attributes.canonicalTitle || "").toLowerCase();
+    const abbrevs = (entry.attributes.abbreviatedTitles || []).map(s => s.toLowerCase());
+    const titles = [
+      canonical,
+      ...(abbrevs || []),
+      (entry.attributes.titles?.en || "").toLowerCase(),
+      (entry.attributes.titles?.en_jp || "").toLowerCase(),
+      (entry.attributes.titles?.ja_jp || "").toLowerCase(),
+    ];
+    return titles.some(t => t && t.includes(matchString));
+  });
+
+  const totalEpisodes = relevantEntries.reduce(
+    (acc, entry) => acc + (entry.attributes.episodeCount || 0),
+    0
+  );
+
+  let status = null;
+  if (relevantEntries.some(e => e.attributes.status === "current")) {
+    status = "current";
+  } else if (relevantEntries.some(e => e.attributes.status === "upcoming")) {
+    status = "upcoming";
+  } else if (relevantEntries.length > 0) {
+    relevantEntries.sort(
+      (a, b) =>
+        (b.attributes.startDate || "").localeCompare(a.attributes.startDate || "")
+    );
+    status = relevantEntries[0].attributes.status;
+  }
+
+  return {
+    totalEpisodes,
+    status,
+    seriesList: relevantEntries.map(e => ({
+      id: e.id,
+      title: e.attributes.canonicalTitle,
+      episodeCount: e.attributes.episodeCount,
+      status: e.attributes.status,
+      startDate: e.attributes.startDate,
+      subtype: e.attributes.subtype,
+    })),
+  };
+}
+
 // Divider bar
 const DividerBar = () => (
   <div className="w-full my-4 border-t border-gray-700" />
@@ -120,6 +174,8 @@ function App() {
   const [selectedAniListLinks, setSelectedAniListLinks] = useState([]);
   const [viewType, setViewType] = useState("tiles");
   const [search, setSearch] = useState("");
+  // Franchise info state (NEW)
+  const [franchiseInfo, setFranchiseInfo] = useState(null);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -224,11 +280,12 @@ function App() {
     );
   });
 
-  // When a card is clicked, fetch genres and AniList streaming links
+  // When a card is clicked, fetch genres, AniList streaming links, and franchise info
   const handleCardClick = async (anime) => {
     setSelectedAnime(anime);
     setSelectedGenres([]);
     setSelectedAniListLinks([]);
+    setFranchiseInfo(null);
 
     // Fetch genres
     if (anime.genreLink) {
@@ -245,6 +302,10 @@ function App() {
     // AniList streaming links
     const aniListLinks = await fetchStreamingLinks(anime.title || "");
     setSelectedAniListLinks(aniListLinks);
+
+    // Franchise info (NEW)
+    const info = await fetchFranchiseInfo(anime.title || "");
+    setFranchiseInfo(info);
   };
 
   const getCardClasses = (watchStatus) => {
@@ -454,9 +515,6 @@ function App() {
                     <DividerBar />
                     {/* API info */}
                     <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Kitsu Status:</span> {selectedAnime.kitsuStatus}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Kitsu Popularity Rank:</span> {selectedAnime.popularityRank}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
@@ -466,14 +524,33 @@ function App() {
                       <span className="font-semibold">Release Year:</span> {selectedAnime.year}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Episodes:</span> {selectedAnime.episodeCount}
-                    </p>
-                    <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Genres:</span> {selectedGenres.length > 0 ? selectedGenres.join(", ") : "Loading..."}
                     </p>
-                    {/* Only one divider between API info and streaming options */}
+                    {/* Franchise Information section (NEW, above streaming info) */}
                     <DividerBar />
-                    {/* Streaming Options at the bottom */}
+                    <div className="mt-4 pt-4 border-t border-gray-700">
+                      <span className="font-semibold text-gray-300">Franchise Information:</span>
+                      {franchiseInfo ? (
+                        <div className="mt-2">
+                          <p>
+                            <span className="font-semibold">Total Franchise Episodes:</span> {franchiseInfo.totalEpisodes}
+                          </p>
+                          <p>
+                            <span className="font-semibold">Franchise Status:</span> {franchiseInfo.status}
+                          </p>
+                          <ul className="mt-2 list-disc ml-6">
+                            {franchiseInfo.seriesList.map(series => (
+                              <li key={series.id}>
+                                {series.title} ({series.subtype}) - {series.episodeCount} episodes, status: {series.status}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : (
+                        <p className="mt-2 text-gray-400">Loading franchise info...</p>
+                      )}
+                    </div>
+                    {/* Streaming Options below Franchise Information */}
                     <StreamingOptions links={selectedAniListLinks} />
                   </div>
                 </div>
