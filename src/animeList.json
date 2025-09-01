@@ -1,103 +1,103 @@
 [
   {
     "title": "Haikyu",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 1,
-    "overallRating": null,
-    "storyRating": null,
-    "animationVisualsRating": null,
-    "pacing": null,
-    "favoriteCharacter": null,
-    "favoritePart": null,
-    "notes": ""
+    "overallRating": 9,
+    "storyRating": 9,
+    "animationVisualsRating": 8,
+    "pacing": "medium",
+    "favoriteCharacter": "Tsuki",
+    "favoritePart": "Character Development",
+    "notes": "Uplifting volleyball journey"
   },
   {
     "title": "Solo Leveling",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 2,
-    "overallRating": null,
-    "storyRating": null,
-    "animationVisualsRating": null,
-    "pacing": null,
-    "favoriteCharacter": null,
+    "overallRating": 8,
+    "storyRating": 7,
+    "animationVisualsRating": 9,
+    "pacing": "fast",
+    "favoriteCharacter": "Jin-Woo",
     "favoritePart": null,
     "notes": ""
   },
   {
     "title": "Run with the wind",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 3,
-    "overallRating": null,
-    "storyRating": null,
-    "animationVisualsRating": null,
-    "pacing": null,
+    "overallRating": 7,
+    "storyRating": 6,
+    "animationVisualsRating": 7,
+    "pacing": "slow",
     "favoriteCharacter": null,
     "favoritePart": null,
-    "notes": ""
+    "notes": "strong character development"
   },
   {
     "title": "Attack on Titan",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 4,
-    "overallRating": null,
-    "storyRating": null,
-    "animationVisualsRating": null,
-    "pacing": null,
-    "favoriteCharacter": null,
+    "overallRating": 7,
+    "storyRating": 8,
+    "animationVisualsRating": 8,
+    "pacing": "mixed",
+    "favoriteCharacter": "Armen",
     "favoritePart": null,
     "notes": ""
   },
   {
     "title": "Ghost stories",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 5,
-    "overallRating": null,
-    "storyRating": null,
-    "animationVisualsRating": null,
-    "pacing": null,
-    "favoriteCharacter": null,
+    "overallRating": 6,
+    "storyRating": 4,
+    "animationVisualsRating": 5,
+    "pacing": "slow",
+    "favoriteCharacter": "N/A",
     "favoritePart": null,
-    "notes": ""
+    "notes": "raunchy early 2000's humor"
   },
   {
     "title": "Chainsaw man",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 6,
-    "overallRating": null,
-    "storyRating": null,
-    "animationVisualsRating": null,
-    "pacing": null,
+    "overallRating": 7,
+    "storyRating": 7,
+    "animationVisualsRating": 9,
+    "pacing": "medium",
     "favoriteCharacter": null,
     "favoritePart": null,
     "notes": ""
   },
   {
     "title": "Dragon Ball Daima",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 7,
-    "overallRating": null,
-    "storyRating": null,
-    "animationVisualsRating": null,
-    "pacing": null,
+    "overallRating": 5,
+    "storyRating": 5,
+    "animationVisualsRating": 6,
+    "pacing": "slow",
     "favoriteCharacter": null,
     "favoritePart": null,
-    "notes": ""
+    "notes": "felt like they wanted to capture the magic of DB but didn't take the time to"
   },
   {
     "title": "Demon Slayer",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 8,
-    "overallRating": null,
-    "storyRating": null,
-    "animationVisualsRating": null,
-    "pacing": null,
-    "favoriteCharacter": null,
+    "overallRating": 8,
+    "storyRating": 9,
+    "animationVisualsRating": 9,
+    "pacing": "mixed",
+    "favoriteCharacter": "Komodo",
     "favoritePart": null,
     "notes": ""
   },
   {
     "title": "Mashle: Magic and Muscles",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 9,
     "overallRating": null,
     "storyRating": null,
@@ -105,11 +105,11 @@
     "pacing": null,
     "favoriteCharacter": null,
     "favoritePart": null,
-    "notes": ""
+    "notes": "Harry Potter Rip off"
   },
   {
     "title": "Jujutsu kaisen",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 10,
     "overallRating": null,
     "storyRating": null,
@@ -121,7 +121,7 @@
   },
   {
     "title": "Erased",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 11,
     "overallRating": null,
     "storyRating": null,
@@ -133,7 +133,7 @@
   },
   {
     "title": "Blue lock",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 12,
     "overallRating": null,
     "storyRating": null,
@@ -145,7 +145,7 @@
   },
   {
     "title": "Kurokos basket",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 13,
     "overallRating": null,
     "storyRating": null,
@@ -157,7 +157,7 @@
   },
   {
     "title": "Blue exorcist",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 14,
     "overallRating": null,
     "storyRating": null,
@@ -169,7 +169,7 @@
   },
   {
     "title": "Dan da dan",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 15,
     "overallRating": null,
     "storyRating": null,
@@ -181,7 +181,7 @@
   },
   {
     "title": "Kaiju No. 8",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 16,
     "overallRating": null,
     "storyRating": null,
@@ -193,7 +193,7 @@
   },
   {
     "title": "Sk8",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 17,
     "overallRating": null,
     "storyRating": null,
@@ -205,7 +205,7 @@
   },
   {
     "title": "Vinland saga",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 18,
     "overallRating": null,
     "storyRating": null,
@@ -217,7 +217,7 @@
   },
   {
     "title": "Frieren",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 19,
     "overallRating": null,
     "storyRating": null,
@@ -229,7 +229,7 @@
   },
   {
     "title": "My hero academia",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 20,
     "overallRating": null,
     "storyRating": null,
@@ -241,7 +241,7 @@
   },
   {
     "title": "My hero academia vigilantes",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 21,
     "overallRating": null,
     "storyRating": null,
@@ -253,7 +253,7 @@
   },
   {
     "title": "Horimiya",
-    "status": "Watched",
+    "watchStatus": "Watched",
     "watchOrder": 22,
     "overallRating": null,
     "storyRating": null,
@@ -265,7 +265,7 @@
   },
   {
     "title": "Bungo stray dogs",
-    "status": "Watched",
+    "watchStatus": "Watching",
     "watchOrder": 23,
     "overallRating": null,
     "storyRating": null,
@@ -277,7 +277,7 @@
   },
   {
     "title": "Full metal alchemist brotherhood",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 24,
     "overallRating": null,
     "storyRating": null,
@@ -289,7 +289,7 @@
   },
   {
     "title": "Arcane",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 25,
     "overallRating": null,
     "storyRating": null,
@@ -301,7 +301,7 @@
   },
   {
     "title": "Hunter Hunter",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 26,
     "overallRating": null,
     "storyRating": null,
@@ -313,7 +313,7 @@
   },
   {
     "title": "Fire Force",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 27,
     "overallRating": null,
     "storyRating": null,
@@ -325,7 +325,7 @@
   },
   {
     "title": "Rising of shield hero",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 28,
     "overallRating": null,
     "storyRating": null,
@@ -337,7 +337,7 @@
   },
   {
     "title": "Cowboy Bebop",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 29,
     "overallRating": null,
     "storyRating": null,
@@ -349,7 +349,7 @@
   },
   {
     "title": "Samurai Champloo",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 30,
     "overallRating": null,
     "storyRating": null,
@@ -361,7 +361,7 @@
   },
   {
     "title": "Steins Gate",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 31,
     "overallRating": null,
     "storyRating": null,
@@ -373,7 +373,7 @@
   },
   {
     "title": "Code Geass",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 32,
     "overallRating": null,
     "storyRating": null,
@@ -385,7 +385,7 @@
   },
   {
     "title": "shin sekai yori",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 33,
     "overallRating": null,
     "storyRating": null,
@@ -397,7 +397,7 @@
   },
   {
     "title": "assassination classroom",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 34,
     "overallRating": null,
     "storyRating": null,
@@ -409,7 +409,7 @@
   },
   {
     "title": "fate zero",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 35,
     "overallRating": null,
     "storyRating": null,
@@ -421,7 +421,7 @@
   },
   {
     "title": "fate stay",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 36,
     "overallRating": null,
     "storyRating": null,
@@ -433,7 +433,7 @@
   },
   {
     "title": "violet evergarden",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 37,
     "overallRating": null,
     "storyRating": null,
@@ -445,7 +445,7 @@
   },
   {
     "title": "mob psycho 100",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 38,
     "overallRating": null,
     "storyRating": null,
@@ -457,7 +457,7 @@
   },
   {
     "title": "devil man crybaby",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 39,
     "overallRating": null,
     "storyRating": null,
@@ -469,7 +469,7 @@
   },
   {
     "title": "death note",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 40,
     "overallRating": null,
     "storyRating": null,
@@ -481,7 +481,7 @@
   },
   {
     "title": "cyberpunk edgerunners",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 41,
     "overallRating": null,
     "storyRating": null,
@@ -493,7 +493,7 @@
   },
   {
     "title": "evangelion",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 42,
     "overallRating": null,
     "storyRating": null,
@@ -505,7 +505,7 @@
   },
   {
     "title": "A place further than the universe",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 43,
     "overallRating": null,
     "storyRating": null,
@@ -517,7 +517,7 @@
   },
   {
     "title": "banana fish",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 44,
     "overallRating": null,
     "storyRating": null,
@@ -529,7 +529,7 @@
   },
   {
     "title": "baccano",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 45,
     "overallRating": null,
     "storyRating": null,
@@ -541,7 +541,7 @@
   },
   {
     "title": "psycho pass",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 46,
     "overallRating": null,
     "storyRating": null,
@@ -553,7 +553,7 @@
   },
   {
     "title": "black lagoon",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 47,
     "overallRating": null,
     "storyRating": null,
@@ -565,7 +565,7 @@
   },
   {
     "title": "death parade",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 48,
     "overallRating": null,
     "storyRating": null,
@@ -577,7 +577,7 @@
   },
   {
     "title": "Toradora",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 49,
     "overallRating": null,
     "storyRating": null,
@@ -589,7 +589,7 @@
   },
   {
     "title": "fooly cooly",
-    "status": "Unwatched",
+    "watchStatus": "Unwatched",
     "watchOrder": 50,
     "overallRating": null,
     "storyRating": null,
