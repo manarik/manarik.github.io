@@ -1,6 +1,29 @@
 import React, { useState, useEffect } from "react";
 import animeListData from "./animeList.json";
 
+// Back to Top Button component
+function BackToTopButton() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleClick = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  return show ? (
+    <button
+      className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg p-3 text-xl"
+      onClick={handleClick}
+      aria-label="Back to top"
+    >
+      ↑
+    </button>
+  ) : null;
+}
+
 function App() {
   const [animeList, setAnimeList] = useState([]);
   const [selectedAnime, setSelectedAnime] = useState(null);
@@ -8,6 +31,8 @@ function App() {
   const [sortBy, setSortBy] = useState("title");
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedStreamers, setSelectedStreamers] = useState("Loading...");
+  const [viewType, setViewType] = useState("tiles"); // 'tiles' or 'list'
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     // Fetch all anime details in parallel
@@ -28,10 +53,10 @@ function App() {
               episodeCount: anime.attributes.episodeCount || "N/A",
               kitsuStatus: anime.attributes.status || "N/A",
               poster: anime.attributes.posterImage?.large || "https://via.placeholder.com/300?text=No+Image",
+              posterThumb: anime.attributes.posterImage?.tiny || anime.attributes.posterImage?.small || anime.attributes.posterImage?.original || "https://via.placeholder.com/64?text=No+Image",
               genreLink: anime.relationships.genres.links.related,
               popularityRank: anime.attributes.popularityRank ?? "N/A",
               ratingRank: anime.attributes.ratingRank ?? "N/A",
-              // Do not fetch streamers here; will fetch when tile is selected
             };
           } else {
             extra = {
@@ -41,10 +66,10 @@ function App() {
               episodeCount: "N/A",
               kitsuStatus: "N/A",
               poster: "https://via.placeholder.com/300?text=No+Image",
+              posterThumb: "https://via.placeholder.com/64?text=No+Image",
               genreLink: null,
               popularityRank: "N/A",
               ratingRank: "N/A",
-              // No streamers here
             };
           }
           return {
@@ -61,6 +86,7 @@ function App() {
             episodeCount: "N/A",
             kitsuStatus: "N/A",
             poster: "https://via.placeholder.com/300?text=No+Image",
+            posterThumb: "https://via.placeholder.com/64?text=No+Image",
             genreLink: null,
             popularityRank: "N/A",
             ratingRank: "N/A",
@@ -94,6 +120,21 @@ function App() {
       return aOrder - bOrder;
     }
     return 0;
+  });
+
+  // Filter logic (search bar: title, year, status, etc)
+  const filteredAnimeList = sortedAnimeList.filter(anime => {
+    const s = search.trim().toLowerCase();
+    if (!s) return true;
+    // Check title, year, status, synopsis, favorite character
+    return (
+      (anime.title || "").toLowerCase().includes(s) ||
+      (anime.year || "").toLowerCase().includes(s) ||
+      (anime.watchStatus || "").toLowerCase().includes(s) ||
+      (anime.synopsis || "").toLowerCase().includes(s) ||
+      (anime.favoriteCharacter || "").toLowerCase().includes(s) ||
+      (anime.notes || "").toLowerCase().includes(s)
+    );
   });
 
   // When a card is clicked, fetch genres and streamers for that anime only
@@ -161,27 +202,68 @@ function App() {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen text-white">
-      <div className="container mx-auto py-8">
+    <div
+      className="bg-gray-900 min-h-screen text-white"
+      style={{
+        // Prevent horizontal scroll on mobile
+        overflowX: "hidden",
+      }}
+    >
+      <div className="container mx-auto py-8 px-2" style={{ maxWidth: "100vw" }}>
         <h1 className="text-4xl font-bold mb-6 text-white">Anime Tracker</h1>
-        <div className="mb-4">
-          <label className="mr-2">Sort by:</label>
-          <select
-            className="bg-gray-700 text-white rounded"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option value="title">Title</option>
-            <option value="overallRating">Overall Rating</option>
-            <option value="watched">Watched Status</option>
-            <option value="watchOrder">Watch Order</option>
-          </select>
+        {/* Search/filter bar and controls */}
+        <div className="mb-4 flex flex-col md:flex-row gap-2 md:gap-6 items-start md:items-center">
+          <div className="flex items-center">
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search anime, year, character, notes..."
+              className="bg-gray-800 text-white rounded px-4 py-2 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+              style={{ minWidth: "180px" }}
+            />
+          </div>
+          <div>
+            <label className="mr-2">Sort by:</label>
+            <select
+              className="bg-gray-700 text-white rounded"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="title">Title</option>
+              <option value="overallRating">Overall Rating</option>
+              <option value="watched">Watched Status</option>
+              <option value="watchOrder">Watch Order</option>
+            </select>
+          </div>
+          <div>
+            <label className="mr-2">View:</label>
+            <button
+              className={`mr-1 px-3 py-1 rounded ${viewType === "tiles" ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"}`}
+              onClick={() => setViewType("tiles")}
+            >
+              Tiles
+            </button>
+            <button
+              className={`px-3 py-1 rounded ${viewType === "list" ? "bg-blue-600 text-white" : "bg-gray-700 text-gray-300"}`}
+              onClick={() => setViewType("list")}
+            >
+              List
+            </button>
+          </div>
         </div>
         {loading ? (
           <div className="text-center text-gray-300">Loading anime list...</div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {sortedAnimeList.map((anime) => (
+        ) : viewType === "tiles" ? (
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
+            style={{
+              // Prevent horizontal overflow on mobile
+              maxWidth: "100vw",
+              overflowX: "hidden",
+            }}
+          >
+            {filteredAnimeList.map((anime) => (
               <div
                 key={anime.kitsu_id}
                 className={`${getCardClasses(anime.watchStatus)} rounded-lg shadow-lg overflow-hidden cursor-pointer hover:scale-105 transform transition`}
@@ -210,7 +292,64 @@ function App() {
               </div>
             ))}
           </div>
+        ) : (
+          // Condensed list view
+          <div
+            className="overflow-x-auto"
+            style={{
+              borderRadius: "0.5rem",
+              background: "#23272A",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+            }}
+          >
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr>
+                  <th className="p-2 text-left text-gray-400">Cover</th>
+                  <th className="p-2 text-left text-gray-400">Title</th>
+                  <th className="p-2 text-left text-gray-400">Status</th>
+                  <th className="p-2 text-left text-gray-400">Year</th>
+                  <th className="p-2 text-left text-gray-400">Episodes</th>
+                  <th className="p-2 text-left text-gray-400">Rating</th>
+                  <th className="p-2 text-left text-gray-400">Popularity</th>
+                  <th className="p-2 text-left text-gray-400">Watch Order</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredAnimeList.map((anime) => (
+                  <tr
+                    key={anime.kitsu_id}
+                    className="cursor-pointer hover:bg-gray-800"
+                    onClick={() => handleCardClick(anime)}
+                  >
+                    <td className="p-2">
+                      <img
+                        src={anime.posterThumb}
+                        alt={anime.title}
+                        width={48}
+                        height={64}
+                        style={{
+                          borderRadius: "0.25rem",
+                          objectFit: "cover",
+                          background: "#222"
+                        }}
+                      />
+                    </td>
+                    <td className="p-2">{anime.title || "Unknown Title"}</td>
+                    <td className="p-2">{anime.watchStatus}</td>
+                    <td className="p-2">{anime.year}</td>
+                    <td className="p-2">{anime.episodeCount}</td>
+                    <td className="p-2">{anime.overallRating}</td>
+                    <td className="p-2">{anime.popularityRank}</td>
+                    <td className="p-2">{anime.watchOrder}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
+
+        <BackToTopButton />
 
         {/* Modal for selected anime details */}
         {selectedAnime && (
@@ -318,6 +457,22 @@ function App() {
           </div>
         )}
       </div>
+      {/* Custom thin scrollbar for mobile/desktop */}
+      <style>
+        {`
+          body, html {
+            overscroll-behavior-x: none;
+          }
+          ::-webkit-scrollbar {
+            width: 8px;
+            background: #222;
+          }
+          ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 6px;
+          }
+        `}
+      </style>
     </div>
   );
 }
