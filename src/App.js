@@ -103,9 +103,8 @@ function StreamingOptions({ links }) {
   );
 }
 
-// Franchise aggregation logic (NEW)
+// Franchise aggregation logic
 async function fetchFranchiseInfo(franchiseString) {
-  // Search Kitsu for this franchise
   const resp = await fetch(`https://kitsu.io/api/edge/anime?filter[text]=${encodeURIComponent(franchiseString)}`);
   const data = await resp.json();
   const allowedSubtypes = ["TV", "movie"];
@@ -163,6 +162,63 @@ const DividerBar = () => (
   <div className="w-full my-4 border-t border-gray-700" />
 );
 
+// Scrolling Banner Component
+function ScrollingBanner({ animeList }) {
+  // Find current show being watched
+  const currentWatching = animeList.find(a => a.watchStatus === "Watching");
+  const currentOrder = currentWatching ? Number(currentWatching.watchOrder) : Infinity;
+
+  // Only consider watched shows with lower watchOrder than the current show
+  const lastFinished = [...animeList]
+    .filter(a => a.watchStatus === "Watched" && Number(a.watchOrder) < currentOrder)
+    .sort((a, b) => Number(b.watchOrder) - Number(a.watchOrder))[0]
+    // If none found, fallback to highest watchOrder "Watched"
+    || [...animeList]
+      .filter(a => a.watchStatus === "Watched")
+      .sort((a, b) => Number(b.watchOrder) - Number(a.watchOrder))[0];
+
+  // Next show to be watched: lowest watchOrder with status "Unwatched"
+  const nextUp = [...animeList]
+    .filter(a => a.watchStatus === "Unwatched")
+    .sort((a, b) => Number(a.watchOrder) - Number(b.watchOrder))[0];
+
+  return (
+    <div style={{
+      position: "fixed",
+      bottom: 0,
+      left: 0,
+      width: "100vw",
+      background: "#1a202c",
+      color: "#fff",
+      padding: "10px 0",
+      fontWeight: "bold",
+      zIndex: 100,
+      overflow: "hidden"
+    }}>
+      <div
+        style={{
+          display: "inline-block",
+          whiteSpace: "nowrap",
+          minWidth: "100vw",
+          animation: "marquee 30s linear infinite" // <-- change speed here!
+        }}
+      >
+        <span style={{ color: "#FFD700" }}>Last Finished: {lastFinished?.title || "N/A"}</span> |{" "}
+        <span style={{ color: "#00FF90" }}>Watching Now: {currentWatching?.title || "N/A"}</span> |{" "}
+        <span style={{ color: "#00BFFF" }}>Next Up: {nextUp?.title || "N/A"}</span>
+      </div>
+      <style>
+        {`
+          @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+          }
+        `}
+      </style>
+    </div>
+  );
+}
+
 function App() {
   useAnimeTabWithImage();
 
@@ -174,7 +230,6 @@ function App() {
   const [selectedAniListLinks, setSelectedAniListLinks] = useState([]);
   const [viewType, setViewType] = useState("tiles");
   const [search, setSearch] = useState("");
-  // Franchise info state (NEW)
   const [franchiseInfo, setFranchiseInfo] = useState(null);
 
   useEffect(() => {
@@ -185,7 +240,7 @@ function App() {
             `https://kitsu.io/api/edge/anime?filter[text]=${encodeURIComponent(entry.title)}`
           );
           const apiData = await res.json();
-          // --------- PATCH: FIND BEST MATCH ---------
+          // PATCH: Find best match for title
           const searchTitle = entry.title.trim().toLowerCase();
           const anime = apiData.data.find(a =>
             (a.attributes.canonicalTitle || "").trim().toLowerCase() === searchTitle
@@ -252,7 +307,6 @@ function App() {
 
   // Sorting logic
   const sortedAnimeList = [...animeList].sort((a, b) => {
-    // Use watchOrder as secondary sort if present and numbers
     if (sortBy === "title") {
       return (a.title || "").localeCompare(b.title || "");
     } else if (sortBy === "overallRating") {
@@ -311,7 +365,7 @@ function App() {
     const aniListLinks = await fetchStreamingLinks(anime.title || "");
     setSelectedAniListLinks(aniListLinks);
 
-    // Franchise info (NEW)
+    // Franchise info
     const info = await fetchFranchiseInfo(anime.title || "");
     setFranchiseInfo(info);
   };
@@ -452,7 +506,6 @@ function App() {
               </thead>
               <tbody>
                 {filteredAnimeList.map((anime) => {
-                  // Use same highlighting as tiles
                   let rowClass = "cursor-pointer hover:bg-gray-800 ";
                   if (anime.watchStatus === "Watching") {
                     rowClass += "bg-green-900 border-l-4 border-green-700";
@@ -534,7 +587,6 @@ function App() {
                     <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Genres:</span> {selectedGenres.length > 0 ? selectedGenres.join(", ") : "Loading..."}
                     </p>
-                    {/* Franchise Information section (NEW, above streaming info) */}
                     <DividerBar />
                     <div className="mt-4 pt-4 border-t border-gray-700">
                       <span className="font-semibold text-gray-300">Franchise Information:</span>
@@ -558,7 +610,6 @@ function App() {
                         <p className="mt-2 text-gray-400">Loading franchise info...</p>
                       )}
                     </div>
-                    {/* Streaming Options below Franchise Information */}
                     <StreamingOptions links={selectedAniListLinks} />
                   </div>
                 </div>
@@ -567,6 +618,8 @@ function App() {
           </div>
         )}
       </div>
+      {/* Scrolling Banner at the bottom */}
+      <ScrollingBanner animeList={animeList} />
       {/* Custom scrollbar for mobile/desktop */}
       <style>
         {`
