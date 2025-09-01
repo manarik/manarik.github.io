@@ -457,13 +457,13 @@ function App() {
                       <span className="font-semibold">Kitsu Status:</span> {selectedAnime.kitsuStatus}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Popularity Rank:</span> {selectedAnime.popularityRank}
+                      <span className="font-semibold">Kitsu Popularity Rank:</span> {selectedAnime.popularityRank}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Rating Rank:</span> {selectedAnime.ratingRank}
+                      <span className="font-semibold">Kitsu Rating Rank:</span> {selectedAnime.ratingRank}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
-                      <span className="font-semibold">Year:</span> {selectedAnime.year}
+                      <span className="font-semibold">Release Year:</span> {selectedAnime.year}
                     </p>
                     <p className="text-gray-400 text-sm mb-1">
                       <span className="font-semibold">Episodes:</span> {selectedAnime.episodeCount}
